@@ -63,6 +63,7 @@ int main(int argc, char **argv){
     tn=t0+tdiff;
   if(optind < argc){
     printf("mining for %s\n",argv[optind]);
+    fflush(NULL);
     memset(keybuf,0,sizeof(keybuf));
     for(i=0;i<sizeof(keybuf) && (argv[optind][i]);++i){
       keybuf[i]=argv[optind][i];
@@ -101,7 +102,9 @@ int main(int argc, char **argv){
         unsigned long c;
         for(c=0x8000000000000000,i=0;hash<c;++i)
           c>>=1;
-        printf("%2d %s --> %016lx\n",i,keybuf,hash);
+        tbuf=localtime(&t); // tbuf points to static data
+        strftime(tstr,sizeof(tstr),"%H:%M:%S",tbuf);  
+        printf("%2d %s %s --> %016lx\n",i,tstr,keybuf,hash);
         fflush(NULL);
         if(++printed >= num_keys)
           break;
